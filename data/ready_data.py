@@ -23,7 +23,7 @@ class Ready_Data(object):
 
         self.name = "AAPL"
         self.source = 'yahoo'
-        self.start = datetime.datetime(2012, 1, 1)
+        self.start = datetime.datetime(2010, 1, 1)
         self.end = datetime.date.today()
 
     def Get_data(self,name):
@@ -120,35 +120,36 @@ class Ready_Data(object):
         # print results
         for index, row in data.iterrows():
             # These first few lines are done for any trade
-            # print index,row
+            # print index[SYMBOL]
             shares = portfolio.setdefault(index[SYMBOL], 0)
-            print portfolio.setdefault(index[SYMBOL], 0)
+
             trade_val = 0
-            batches = 0
+            batches = 1
 
             cash_change = row["Price"] * shares
-            # print row["Price"] , shares
+
             # Shares could potentially be a positive or negative number (cash_change will be added in the end; negative shares indicate a short)
-            # print cash_change
+
             portfolio[index[SYMBOL]] = 0  # For a given symbol, a position is effectively cleared
 
             old_price = port_prices.setdefault(index[SYMBOL], row["Price"])
+            # print old_price,row["Price"]
             portfolio_val = 0
-
+            # print shares
             if shares != 0:
-                # print cash_change
+
                 cash_change = cash_change - flat_commision
-                # print cash_change
-                print "Selling" + " " + index[SYMBOL]
+
+                # print "Selling" + " " + index[SYMBOL]
 
             for key, val in portfolio.items():
                 portfolio_val += val * port_prices[key]
 
             if row["Signal"] == "Buy" and row["Regime"] == 1:  # Entering a long position
-                batches = np.floor((portfolio_val + cash) * port_value) // np.ceil(
-                    batch * row["Price"])  # Maximum number of batches of stocks invested in
-                trade_val = batches * batch * row[
-                    "Price"] + flat_commision  # How much money is put on the line with each trade
+                batches = np.floor((portfolio_val + cash) * port_value) // np.ceil(batch * row["Price"])
+                # Maximum number of batches of stocks invested in
+                trade_val = batches * batch * row["Price"] + flat_commision
+                # How much money is put on the line with each trade
                 if trade_val > flat_commision:
                     # print trade_val
                     print "Long Position" + " " + index[SYMBOL]
@@ -164,7 +165,7 @@ class Ready_Data(object):
                 # raise ValueError("I don't know what to do with signal " + row["Signal"])
 
             pprofit = row["Price"] - old_price  # Compute profit per share; old_price is set in such a way that entering a position results in a profit of zero
-
+            # print pprofit
             # Update report
             results = results.append(pd.DataFrame({
                 "Start Cash": cash,
