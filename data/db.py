@@ -31,7 +31,7 @@ def get_db_session():
 ###### 数据库表 start
 
 class PinkunhuBase(object):
-    """ 贫困户表的父类 """
+    """ 股票表的父类 """
     id = Column(String(20), primary_key=True)
     # 住址
     province = Column(String(36 ))
@@ -72,23 +72,23 @@ class PinkunhuBase(object):
     washing_machine = Column(String(50))
     fridge = Column(String(50))
 
-    ny_is_poor = Column(Integer()) # 下一年是否贫困, 1表示是，0表示否
-    ny_total_income = Column(Float()) # 下一年年收入
-    ny_person_income = Column(Float()) # 下一年人均年收入
+    ny_is_poor = Column(Integer()) #
+    ny_total_income = Column(Float()) #
+    ny_person_income = Column(Float()) #
 
 
 class Pinkunhu2014(PinkunhuBase, Base):
-    """ 2014年贫困户表 """
+    """ 2014年股票表 """
     __tablename__ = 'yunnan_all_pinkunhu_2014'
 
 
 class Pinkunhu2015(PinkunhuBase, Base):
-    """ 2015年贫困户表 """
+    """ 2015年股票表 """
     __tablename__ = 'yunnan_all_pinkunhu_2015'
 
 
 class Pinkunhu2016(PinkunhuBase, Base):
-    """ 2016年贫困户表 """
+    """ 2016年股票表 """
     __tablename__ = 'yunnan_all_pinkunhu_2016'
 
 ###### 数据库表 end
